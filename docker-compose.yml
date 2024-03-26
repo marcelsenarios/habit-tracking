@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=db@1562
+      - POSTGRES_DB=habit_tracking_db
+    volumes:
+      - ./backend/src:/app/src
+    depends_on:
+      - database
+
+  database:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=db@1562
+      - POSTGRES_DB=habit_tracking_db
+    ports:
+      - "5432:5432"
